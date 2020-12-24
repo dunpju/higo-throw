@@ -6,15 +6,26 @@ import (
 	"github.com/dengpju/higo-utils/utils"
 	"github.com/gin-gonic/gin"
 	"runtime"
+	"sync"
 )
+
+var throwable *Throwable
+var once sync.Once
 
 type Throwable struct {
 
 }
 
+func init() {
+	once.Do(func() {
+		throwable = &Throwable{}
+	})
+}
+
 func (this *Throwable) Exception(message interface{}, code int, data ...interface{}) {
 	_, file, line, _ := runtime.Caller(2)
 	msg := ErrorToString(message)
+	logger.Logrus.Init()
 	logger.Logrus.Info(fmt.Sprintf("%s (code: %d) at %s:%d", msg, code, file, line))
 	panic(gin.H{
 		"code": code,
@@ -25,7 +36,7 @@ func (this *Throwable) Exception(message interface{}, code int, data ...interfac
 
 // 抛出异常
 func Throw(message interface{}, code int, data ...interface{}) {
-	new(Throwable).Exception(message, code, utils.Ifindex(data, 0))
+	throwable.Exception(message, code, utils.Ifindex(data, 0))
 }
 
 // recover 转 string
