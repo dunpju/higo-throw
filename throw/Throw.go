@@ -8,11 +8,11 @@ import (
 	"runtime"
 )
 
-type ServerException struct {
+type Throwable struct {
 
 }
 
-func (this *ServerException) Exception(message interface{}, code int, data ...interface{}) {
+func (this *Throwable) Exception(message interface{}, code int, data ...interface{}) {
 	_, file, line, _ := runtime.Caller(2)
 	msg := ErrorToString(message)
 	logger.Logrus.Info(fmt.Sprintf("%s (code: %d) at %s:%d", msg, code, file, line))
@@ -25,7 +25,7 @@ func (this *ServerException) Exception(message interface{}, code int, data ...in
 
 // 抛出异常
 func Throw(message interface{}, code int, data ...interface{}) {
-	new(ServerException).Exception(message, code, utils.Ifindex(data, 0))
+	new(Throwable).Exception(message, code, utils.Ifindex(data, 0))
 }
 
 // recover 转 string
