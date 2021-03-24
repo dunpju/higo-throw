@@ -21,12 +21,15 @@ const (
 )
 
 var (
-	Handle     parameter.Callable
+	//可自定义参数处理函数
+	Handle parameter.Callable
+	//可自定义日志处理函数
 	LogHandle  func()
 	MapString  utils.MapString
 	LogPayload *LogContent
-	LogFormat  = "%s (code: %d) at %s:%d"
-	LogInfo    = ""
+	//可自定义日志格式
+	LogFormat = "%s (code: %d) at %s:%d"
+	LogInfo   = ""
 )
 
 type LogContent struct {
@@ -41,6 +44,7 @@ func init() {
 		throwable = &Throwable{}
 		LogPayload = &LogContent{}
 		MapString = make(utils.MapString)
+		//初始化参数处理函数
 		Handle = func(p *parameter.Parameter) {
 			if p.Name == MESSAGE {
 				LogPayload.Msg = ErrorToString(p.Value)
@@ -50,6 +54,7 @@ func init() {
 			}
 			MapString.Put(p.Name, p.Value)
 		}
+		//初始化日志处理函数
 		LogHandle = func() {
 			LogInfo = fmt.Sprintf(LogFormat, LogPayload.Msg, LogPayload.Code, LogPayload.File, LogPayload.Line)
 		}
@@ -90,14 +95,14 @@ func ErrorToString(r interface{}) string {
 	case error:
 		return v.Error()
 	case []uint8:
-		return B2S(r.([]uint8))
+		return BytesTOString(r.([]uint8))
 	default:
 		return r.(string)
 	}
 }
 
 // []uint8 转 string
-func B2S(bs []uint8) string {
+func BytesTOString(bs []uint8) string {
 	ba := []byte{}
 	for _, b := range bs {
 		ba = append(ba, byte(b))
