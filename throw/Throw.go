@@ -95,14 +95,14 @@ func ErrorToString(r interface{}) string {
 	case error:
 		return v.Error()
 	case []uint8:
-		return BytesTOString(r.([]uint8))
+		return BytesToString(r.([]uint8))
 	default:
 		return r.(string)
 	}
 }
 
 // []uint8 转 string
-func BytesTOString(bs []uint8) string {
+func BytesToString(bs []uint8) string {
 	ba := []byte{}
 	for _, b := range bs {
 		ba = append(ba, byte(b))
