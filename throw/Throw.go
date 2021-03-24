@@ -9,11 +9,6 @@ import (
 	"sync"
 )
 
-var (
-	throwable *Throwable
-	once      sync.Once
-)
-
 const (
 	MESSAGE = "message"
 	CODE    = "code"
@@ -21,13 +16,16 @@ const (
 )
 
 var (
-	//可自定义参数处理函数
+	once      sync.Once
+	//异常实例(可自定义)
+	ThrowInstance IThrowable
+	//参数处理函数(可自定义)
 	Handle parameter.Callable
-	//可自定义日志处理函数
+	//日志处理函数(可自定义)
 	LogHandle  func()
 	MapString  utils.MapString
 	LogPayload *LogContent
-	//可自定义日志格式
+	//日志格式(可自定义)
 	LogFormat = "%s (code: %d) at %s:%d"
 	LogInfo   = ""
 )
@@ -41,7 +39,7 @@ type Throwable struct{}
 
 func init() {
 	once.Do(func() {
-		throwable = &Throwable{}
+		ThrowInstance = &Throwable{}
 		LogPayload = &LogContent{}
 		MapString = make(utils.MapString)
 		//初始化参数处理函数
@@ -86,7 +84,7 @@ func Data(value interface{}) *parameter.Parameter {
 
 // 抛出异常
 func Throw(parameters ...*parameter.Parameter) {
-	throwable.Exception(parameters...)
+	ThrowInstance.Exception(parameters...)
 }
 
 // recover 转 string
