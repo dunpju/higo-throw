@@ -16,18 +16,14 @@ const (
 )
 
 var (
-	once      sync.Once
-	//异常实例(可自定义)
-	ThrowInstance IThrowable
-	//参数处理函数(可自定义)
-	Handle parameter.Callable
-	//日志处理函数(可自定义)
-	LogHandle  func()
-	MapString  utils.MapString
-	LogPayload *LogContent
-	//日志格式(可自定义)
-	LogFormat = "%s (code: %d) at %s:%d"
-	LogInfo   = ""
+	once          sync.Once
+	ThrowInstance IThrowable         //异常实例(可自定义)
+	Handle        parameter.Callable //参数处理函数(可自定义)
+	LogHandle     func()             //日志处理函数(可自定义)
+	MapString     utils.MapString
+	LogPayload    *LogContent
+	LogFormat     = "%s (code: %d) at %s:%d" //日志格式(可自定义)a
+	LogInfo       = ""
 )
 
 type LogContent struct {
