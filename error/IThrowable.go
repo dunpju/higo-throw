@@ -1,4 +1,4 @@
-package err
+package error
 
 import "gitee.com/dengpju/higo-parameter/parameter"
 
