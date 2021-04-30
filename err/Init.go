@@ -1,4 +1,4 @@
-package throw
+package err
 
 import (
 	"fmt"
