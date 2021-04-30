@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/dengpju/higo-throw/error"
+	"github.com/dengpju/higo-throw/exception"
 )
 
 func main()  {
@@ -10,7 +10,7 @@ func main()  {
 	//	throw.LogFormat = "%s (code: %d)"
 	//	throw.LogInfo = fmt.Sprintf(throw.LogFormat, throw.LogPayload.Msg, throw.LogPayload.Code)
 	//}
-	error.Throw(error.Message("uuujjj333"), error.Code(1))
-	error.Throw(error.Message("uuujjj33344"), error.Code(4))
-	error.Throw(error.Message("uuujjj33355"), error.Code(5))
+	exception.Throw(exception.Message("uuujjj333"), exception.Code(1))
+	exception.Throw(exception.Message("uuujjj33344"), exception.Code(4))
+	exception.Throw(exception.Message("uuujjj33355"), exception.Code(5))
 }
