@@ -7,8 +7,8 @@ import (
 )
 
 type LogContent struct {
-	Msg, File  string
-	Code, Line int
+	Real, Msg, File string
+	Code, Line      int
 }
 
 type Throwable struct{}
@@ -20,8 +20,12 @@ func (this *Throwable) Exception(parameters ...*parameter.Parameter) {
 	parameter.Parameters(parameters).ForEach(Handle)
 	LogHandle()
 	logger.Logrus.Init()
-	logger.Logrus.Info(LogInfo)
+	logger.Logrus.Error(LogInfo)
 	panic(MapString)
+}
+
+func RealMessage(value interface{}) *parameter.Parameter {
+	return parameter.New(REAL, value)
 }
 
 func Message(value interface{}) *parameter.Parameter {
