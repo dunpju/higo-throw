@@ -21,7 +21,7 @@ func (this *Throwable) Exception(parameters ...*parameter.Parameter) {
 	LogHandle()
 	logger.Logrus.Init()
 	logger.Logrus.Error(LogInfo)
-	panic(MapString)
+	panic(ArrayMap.Value())
 }
 
 func RealMessage(value interface{}) *parameter.Parameter {
