@@ -19,7 +19,7 @@ var (
 	ThrowInstance IThrowable         //异常实例(可自定义)
 	Handle        parameter.Callable //参数处理函数(可自定义)
 	LogHandle     func()             //日志处理函数(可自定义)
-	MapString     *utils.ArrayMap
+	ArrayMap      *utils.ArrayMap
 	LogPayload    *LogContent
 	LogFormat     = "%s (code: %d) %s at %s:%d" //日志格式(可自定义)
 	LogInfo       = ""
@@ -29,7 +29,7 @@ func init() {
 	once.Do(func() {
 		ThrowInstance = &Throwable{}
 		LogPayload = &LogContent{}
-		MapString = utils.Array()
+		ArrayMap = utils.Array()
 		//初始化参数处理函数
 		Handle = func(p *parameter.Parameter) {
 			if p.Name == REAL {
@@ -41,7 +41,7 @@ func init() {
 			if p.Name == CODE {
 				LogPayload.Code = p.Value.(int)
 			}
-			MapString.Put(p.Name, p.Value)
+			ArrayMap.Put(p.Name, p.Value)
 		}
 		//初始化日志处理函数
 		LogHandle = func() {
