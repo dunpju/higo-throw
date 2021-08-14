@@ -25,7 +25,7 @@ var (
 	LogInfo       = ""
 )
 
-func init() {
+func init() { 
 	once.Do(func() {
 		ThrowInstance = &Throwable{}
 		LogPayload = &LogContent{}
