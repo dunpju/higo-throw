@@ -32,7 +32,7 @@ func Message(value interface{}) *parameter.Parameter {
 	return parameter.New(MESSAGE, value)
 }
 
-func Code(value int) *parameter.Parameter {
+func Code(value interface{}) *parameter.Parameter {
 	return parameter.New(CODE, value)
 }
 

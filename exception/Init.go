@@ -2,8 +2,10 @@ package exception
 
 import (
 	"fmt"
+	"gitee.com/dengpju/higo-code/code"
 	"gitee.com/dengpju/higo-parameter/parameter"
 	"github.com/dengpju/higo-utils/utils"
+	"strconv"
 	"sync"
 )
 
@@ -25,7 +27,7 @@ var (
 	LogInfo       = ""
 )
 
-func init() { 
+func init() {
 	once.Do(func() {
 		ThrowInstance = &Throwable{}
 		LogPayload = &LogContent{}
@@ -39,7 +41,20 @@ func init() {
 				LogPayload.Msg = ErrorToString(p.Value)
 			}
 			if p.Name == CODE {
-				LogPayload.Code = p.Value.(int)
+				if ic, ok := p.Value.(code.ICode); ok {
+					cm := code.New(ic)
+					LogPayload.Code = int(cm.Code)
+					LogPayload.Msg = cm.Message
+					ArrayMap.Put(MESSAGE, LogPayload.Msg)
+				} else if sc, ok := p.Value.(string); ok {
+					si, err := strconv.Atoi(sc)
+					if err != nil {
+						panic(err)
+					}
+					LogPayload.Code = si
+				} else {
+					LogPayload.Code = p.Value.(int)
+				}
 			}
 			ArrayMap.Put(p.Name, p.Value)
 		}
