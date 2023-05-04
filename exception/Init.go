@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"gitee.com/dengpju/higo-code/code"
 	"gitee.com/dengpju/higo-parameter/parameter"
-	"github.com/dengpju/higo-utils/utils/maputil"
+	"github.com/dunpju/higo-utils/utils/maputil"
 	"strconv"
 	"sync"
 )
@@ -14,6 +14,7 @@ const (
 	MESSAGE = "message"
 	CODE    = "code"
 	DATA    = "data"
+	STACK   = "stack"
 )
 
 var (
@@ -34,6 +35,9 @@ func init() {
 		ArrayMap = maputil.Array()
 		//初始化参数处理函数
 		Handle = func(p *parameter.Parameter) {
+			if p.Name == STACK {
+				LogPayload.Stack = p.Value.(bool)
+			}
 			if p.Name == REAL {
 				LogPayload.Real = ErrorToString(p.Value)
 			}

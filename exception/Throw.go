@@ -2,16 +2,19 @@ package exception
 
 import (
 	"gitee.com/dengpju/higo-parameter/parameter"
-	"github.com/dengpju/higo-logger/logger"
+	"github.com/dunpju/higo-logger/logger"
+	"github.com/dunpju/higo-utils/utils/runtimeutil"
 	"runtime"
 )
 
 type LogContent struct {
 	Real, Msg, File string
 	Code, Line      int
+	Stack           bool
 }
 
-type Throwable struct{}
+type Throwable struct {
+}
 
 func (this *Throwable) Exception(parameters ...*parameter.Parameter) {
 	_, file, line, _ := runtime.Caller(2)
@@ -21,6 +24,14 @@ func (this *Throwable) Exception(parameters ...*parameter.Parameter) {
 	LogHandle()
 	logger.Logrus.Init()
 	logger.Logrus.Error(LogInfo)
+	if LogPayload.Stack {
+		defer func() {
+			if r := recover(); r != nil {
+				id, _ := runtimeutil.GoroutineID()
+				logger.LoggerStack(r, id)
+			}
+		}()
+	}
 	panic(ArrayMap)
 }
 
@@ -38,6 +49,10 @@ func Code(value interface{}) *parameter.Parameter {
 
 func Data(value interface{}) *parameter.Parameter {
 	return parameter.New(DATA, value)
+}
+
+func Stack(value bool) *parameter.Parameter {
+	return parameter.New(STACK, value)
 }
 
 // 抛出异常
